@@ -16,7 +16,6 @@ interface Props extends RXProps {
 }
 
 const HomeScreen = ({ user, navigation, balance }: Props) => {
-  console.log(balance);
 
   return (
     <SafeAreaView>

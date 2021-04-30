@@ -1,12 +1,20 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState } from "react";
-import { TouchableOpacity, FlatList } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import { AppState } from "../store";
-import { TextSTC } from "../styles/Global";
+import { Item, List, TextSTC } from "../styles/Global";
 import { RecordType } from "../types/balanse";
 import { HomeNavigatorParams } from "../types/routes";
-import { getTodaysHistory } from "../utils/utility";
+import {
+  getCategryIcon,
+  getTodaysHistory,
+  CatType,
+  formatter,
+} from "../utils/utility";
+import RenderImage from "./RenderImage";
+import { Feather } from "@expo/vector-icons";
+import { Colors } from "../styles/Colors";
+import { TouchableOpacity } from "react-native";
 
 interface Props extends RXProps {
   navigation: StackNavigationProp<HomeNavigatorParams, "homeinfo">;
@@ -17,9 +25,28 @@ const TranHistory = ({ balance, navigation }: Props) => {
     getTodaysHistory(balance.expenses, balance.incomes)
   );
   return (
-    <FlatList
+    <List
       data={item}
-      renderItem={(item) => <TextSTC>{item.item.category}</TextSTC>}
+      keyExtractor={(item) => item.createdAt}
+      renderItem={({ item, index }) => {
+        let imageData: CatType = getCategryIcon(item.category, item.type);
+
+        return (
+          <TouchableOpacity onPress={() => navigation.navigate("tranedit")}>
+            <Item key={index} type={item.type}>
+              <RenderImage
+                icon={imageData.icon}
+                background={imageData.background}
+              />
+              <TextSTC family="med" style={{ width: 90 }}>
+                {item.category}
+              </TextSTC>
+              <TextSTC family="med">{formatter(item.amount)}</TextSTC>
+              <Feather name="chevron-right" size={30} color={Colors.black} />
+            </Item>
+          </TouchableOpacity>
+        );
+      }}
     />
   );
 };

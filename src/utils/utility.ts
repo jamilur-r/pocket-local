@@ -1,4 +1,5 @@
 import path from "path";
+import { expenseCategories, incomeCategories } from "../data/data";
 import { RecordType } from "../types/balanse";
 
 export const getGreetings = (): string => {
@@ -9,7 +10,7 @@ export const getGreetings = (): string => {
   } else if (date.getHours() <= 21) {
     greetings = "Good Evening";
   } else if (date.getHours() > 22) {
-    greetings = "It is getting late, should sleep";
+    greetings = "It is getting late";
   }
   return greetings;
 };
@@ -45,20 +46,55 @@ export const formatNumbers = (value: number): string => {
 export const formatter = (amount: number): string =>
   amount.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 
-
-  
 export const getTodaysHistory = (
   expenses: RecordType[],
   incomes: RecordType[]
 ): Array<RecordType> => {
   let today: Date = new Date();
+
   const filteredExp = expenses.filter(
-    (item) => item.createdAt.getDay() === today.getDay()
+    (item) => new Date(item.createdAt).getDay() === today.getDay()
   );
   const filteredInc = incomes.filter(
-    (item) => item.createdAt.getDay() === today.getDay()
+    (item) => new Date(item.createdAt).getDay() === today.getDay()
   );
 
   let mergedData: RecordType[] = [...filteredExp, ...filteredInc];
+  console.log(mergedData);
+
   return mergedData;
+};
+
+export interface CatType {
+  icon: string;
+  background: string;
+}
+export const getCategryIcon = (category: string, type: string): CatType => {
+  let found: CatType = {
+    icon: "",
+    background: "",
+  };
+  if (type === "Expense") {
+    expenseCategories.map((i) => {
+      if (i.name === category) {
+        found = {
+          ...found,
+          icon: i.icon,
+          background: i.background,
+        };
+      }
+    });
+    return found;
+  } else if (type === "Income") {
+    incomeCategories.map((i) => {
+      if (i.name === category) {
+        found = {
+          ...found,
+          icon: i.icon,
+          background: i.background,
+        };
+      }
+    });
+    return found;
+  } else return found;
 };

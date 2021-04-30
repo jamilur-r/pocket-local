@@ -68,3 +68,24 @@ export const Info = styled.View`
   padding: 15px;
   border-radius: 10px;
 `;
+
+export const List = styled.FlatList`
+  width: 85%;
+  margin: 20px auto;
+`;
+
+interface ItemType {
+  type?: string;
+}
+
+export const Item = styled.View<ItemType>`
+  width: 100%;
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  margin: 10px 0;
+  border-radius: 10px;
+`;
