@@ -14,6 +14,7 @@ const SignInScreen = ({ signIn }: Props) => {
     first_name: "",
     last_name: "",
     amount: 0,
+    start: 0,
     createAt: new Date(),
     updatedAt: new Date(),
   });
@@ -52,7 +53,11 @@ const SignInScreen = ({ signIn }: Props) => {
           placeholderTextColor={Colors.black}
           keyboardType="number-pad"
           onChangeText={(text) =>
-            setUser({ ...user, amount: parseFloat(text) })
+            setUser({
+              ...user,
+              amount: parseFloat(text),
+              start: parseFloat(text),
+            })
           }
         />
         <ButtonNoBG

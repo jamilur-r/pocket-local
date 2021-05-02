@@ -1,5 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { AppState } from "../store";
 import { Item, List, TextSTC } from "../styles/Global";
@@ -14,39 +14,47 @@ import {
 import RenderImage from "./RenderImage";
 import { Feather } from "@expo/vector-icons";
 import { Colors } from "../styles/Colors";
-import { TouchableOpacity } from "react-native";
+import { ListRenderItem, TouchableOpacity } from "react-native";
 
 interface Props extends RXProps {
   navigation: StackNavigationProp<HomeNavigatorParams, "homeinfo">;
 }
 
 const TranHistory = ({ balance, navigation }: Props) => {
-  const [item] = useState<Array<RecordType>>(
-    getTodaysHistory(balance.expenses, balance.incomes)
+  const [items, setItems] = useState<Array<RecordType | any>>([]);
+
+  useEffect(() =>
+    setItems(getTodaysHistory(balance.expenses, balance.incomes))
   );
+
+  const RenderItem = (item: any, index: number) => {
+    let imageData: CatType = getCategryIcon(item.category, item.type);
+
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("tranedit", { type: item.type, record: item })
+        }
+        key={index.toString()}
+      >
+        <Item type={item.type}>
+          <RenderImage
+            icon={imageData.icon}
+            background={imageData.background}
+          />
+          <TextSTC family="med" style={{ width: 90 }}>
+            {item.category}
+          </TextSTC>
+          <TextSTC family="med">{formatter(item.amount)}</TextSTC>
+          <Feather name="chevron-right" size={30} color={Colors.black} />
+        </Item>
+      </TouchableOpacity>
+    );
+  };
   return (
     <List
-      data={item}
-      keyExtractor={(item) => item.createdAt}
-      renderItem={({ item, index }) => {
-        let imageData: CatType = getCategryIcon(item.category, item.type);
-
-        return (
-          <TouchableOpacity onPress={() => navigation.navigate("tranedit")}>
-            <Item key={index} type={item.type}>
-              <RenderImage
-                icon={imageData.icon}
-                background={imageData.background}
-              />
-              <TextSTC family="med" style={{ width: 90 }}>
-                {item.category}
-              </TextSTC>
-              <TextSTC family="med">{formatter(item.amount)}</TextSTC>
-              <Feather name="chevron-right" size={30} color={Colors.black} />
-            </Item>
-          </TouchableOpacity>
-        );
-      }}
+      data={items}
+      renderItem={({ item, index }) => RenderItem(item, index)}
     />
   );
 };

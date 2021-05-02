@@ -9,6 +9,7 @@ export interface User {
     amount: number;
     createAt: Date;
     updatedAt: Date
+    start?: number
   };
 
 export interface Auth {

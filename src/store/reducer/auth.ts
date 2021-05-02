@@ -6,6 +6,7 @@ const initState: Auth = {
     first_name: "",
     last_name: "",
     amount: 0,
+    start: 0,
     createAt: new Date(),
     updatedAt: new Date(),
   },

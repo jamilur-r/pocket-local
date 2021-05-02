@@ -1,3 +1,4 @@
+import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { SafeAreaView, StatusBar } from "react-native";
@@ -7,14 +8,14 @@ import { HomeNavigatorParams } from "../../types/routes";
 
 interface Props {
   navigation: StackNavigationProp<HomeNavigatorParams, "tranedit">;
+  route: RouteProp<HomeNavigatorParams, "tranedit">;
 }
-const TranEdit = ({ navigation }: Props) => {
-  console.log(navigation);
+const TranEdit = ({ navigation, route }: Props) => {
 
   return (
     <SafeAreaView>
       <Container>
-        <TextSTC>hel</TextSTC>
+        
       </Container>
       <StatusBar backgroundColor={Colors.blueWhite} barStyle="dark-content" />
     </SafeAreaView>

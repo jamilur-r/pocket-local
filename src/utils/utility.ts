@@ -61,7 +61,7 @@ export const getTodaysHistory = (
 
   let mergedData: RecordType[] = [...filteredExp, ...filteredInc];
   console.log(mergedData);
-
+  
   return mergedData;
 };
 
